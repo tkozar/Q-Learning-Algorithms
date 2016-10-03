@@ -85,13 +85,13 @@ classdef GridWorld < handle
         %% step
         % this method allows the agent to request the results of its
         % actions in the world.
-        function [newState,reward] = step(oldState, action)
+        function [newState,reward] = step(object, oldState, action)
            switch action
                %% IF MOVNG RIGHT
                case 0
                    %% checking the value in next state
                    if (oldState(1,1) + 1 < worldSize + 1)
-                       oldState = ans.squareTypes(oldState(1,1) + 1,oldState(2,1));
+                       oldState = object.squareTypes(oldState(1,1) + 1,oldState(2,1));
                    else 
                        oldStateVal = 2;
                    end
@@ -139,7 +139,7 @@ classdef GridWorld < handle
                case 1
                    %% checking the value in next state
                    if (oldState(1,1) - 1 > 0)
-                       oldState = ans.squareTypes(oldState(1,1) - 1,oldState(2,1));
+                       oldState = object.squareTypes(oldState(1,1) - 1,oldState(2,1));
                    else 
                        oldStateVal = 2;
                    end
@@ -187,7 +187,7 @@ classdef GridWorld < handle
                case 2
                    %% checking the value in next state
                    if (oldState(2,1) - 1 > 0)
-                       oldState = ans.squareTypes(oldState(1,1),oldState(2,1) - 1);
+                       oldState = object.squareTypes(oldState(1,1),oldState(2,1) - 1);
                    else 
                        oldStateVal = 2;
                    end
@@ -235,7 +235,7 @@ classdef GridWorld < handle
                case 3
                    %% checking the value in next state
                    if (oldState(2,1) + 1 < worldSize + 1)
-                       oldState = ans.squareTypes(oldState(1,1),oldState(2,1) + 1);
+                       oldState = object.squareTypes(oldState(1,1),oldState(2,1) + 1);
                    else 
                        oldStateVal = 2;
                    end
