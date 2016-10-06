@@ -63,6 +63,10 @@ classdef GridWorld < handle
                     switch obj.squareTypes(i,j)
                         case 2 % walls
                             bmp(i,j,:) = 0;
+                        case 3 % negative reward
+                            bmp(i,j,1) = 0;
+                        case 4 % random reward
+                            bmp(i,j,1) = 0;
                         case 5 % goal
                             bmp(i,j,[1,3]) = 0;
                     end
@@ -99,14 +103,14 @@ classdef GridWorld < handle
                    
                    %% if open, move
                    if (oldStateVal == 1)
-                       reward = 0;
+                       reward = -0.1;
                        newState(1) = oldState(1) + 1;
                        newState(2) = oldState(2);
                    end
                    
                    %% if wall, dont move
                    if (oldStateVal == 2)
-                       reward = 0;
+                       reward = -1;
                        newState(1) = oldState(1);
                        newState(2) = oldState(2);
                    end
@@ -285,72 +289,112 @@ classdef GridWorld < handle
         %% getSensorReadings
         % this method returns the agent's current sensor readings, given
         % the specified state in the grid world
-        function [sensorReadings] = getSensorReadings(obj,state, failureRate)
-            failureRateNum = randi([1,(100/failureRate)],8,1);
-            sqTypeFail = randi([1,5],8,1);
+        function [sensorReadings] = getSensorReadings(obj, state, failureRate)
+            worldSize = size(obj.squareTypes, 1);
+            sqTypeFail = randi([1,4],8,1);
+            flag = true;
             for i = 1
                 %% TOP LEFT
-                if (failureRateNum(i) == 50)
-                    obj.sensorReadings(i) = sqTypeFail(i);
+                if (state(1) - 1 < 1 || state(2) - 1 < 1)
+                    sensorReadings(i) = 2;
+                    flag = false;
+                else if rand() < failureRate && flag == true
+                    sensorReadings(i) = sqTypeFail(i);
                 else
-                    obj.sensorReadings(i) = obj.squareTypes(state(1) - 1, state(2) - 1);
+                    sensorReadings(i) = obj.squareTypes(state(1) - 1, state(2) - 1);
+                    end
                 end
-                i + 1;
+                i = i + 1;
+                flag = true;
                 
                 %% UP
-                if (failureRateNum(i) == 50)
-                    obj.sensorReadings(i) = sqTypeFail(i);
+                if (state(1) - 1 < 1)
+                    sensorReadings(i) = 2;
+                    flag = false;               
+                else if rand() < failureRate && flag == true
+                    sensorReadings(i) = sqTypeFail(i);
                 else
-                    obj.sensorReadings(i) = obj.squareTypes(state(1) - 1, state(2));
+                    sensorReadings(i) = obj.squareTypes(state(1) - 1, state(2));
+                    end
                 end
-                i + 1;
+                i = i + 1;
+                flag = true;
                 
                 %% TOP RIGHT
-                if (failureRateNum(i) == 50)
-                   obj.sensorReadings(i) = sqTypeFail(i);
+                if state(1) - 1 < 1 || state(2) + 1 > worldSize
+                    sensorReadings(i) = 2;
+                    flag = false;
+                else if rand() < failureRate && flag == true
+                   sensorReadings(i) = sqTypeFail(i);
                 else
-                   obj.sensorReadings(i) = obj.squareTypes(state(1) - 1, state(2) + 1);
+                   sensorReadings(i) = obj.squareTypes(state(1) - 1, state(2) + 1);
+                    end
                 end
-                i + 1;
+                i = i + 1;
+                flag = true;
                 
                 %% RIGHT
-                if (failureRateNum(i) == 50)
-                    obj.sensorReadings(i) = sqTypeFail(i);
+                if state(2) + 1 > worldSize
+                    sensorReadings(i) = 2;
+                    flag = false;
+                else if rand() < failureRate && flag == true
+                    sensorReadings(i) = sqTypeFail(i);
                 else
-                    obj.sensorReadings(i) = obj.squareTypes(state(1), state(2) + 1);
+                    sensorReadings(i) = obj.squareTypes(state(1), state(2) + 1);
+                    end
                 end
-                i + 1;
+                i = i + 1;
                 
                 %% BOTTOM RIGHT
-                if (failureRateNum(i) == 50)
-                    obj.sensorReadings(i) = sqTypeFail(i);
+                if state(1) + 1 > worldSize || state(2) + 1 > worldSize
+                    sensorReadings(i) = 2;
+                    flag = false;
+                else if rand() < failureRate && flag == true
+                    sensorReadings(i) = sqTypeFail(i);
                 else
-                    obj.sensorReadings(i) = obj.squareTypes(state(1) + 1, state(2) + 1);
+                    sensorReadings(i) = obj.squareTypes(state(1) + 1, state(2) + 1);
+                    end
                 end
-                i + 1;
+                i = i + 1;
+                flag = true;
                 
                 %% DOWN
-                if (failureRateNum(i) == 50)
-                    obj.sensorReadings(i) = sqTypeFail(i);
+                if state(1) + 1 > worldSize
+                    sensorReadings(i) = 2;
+                    flag = false;
+                else if rand() < failureRate && flag == true
+                    sensorReadings(i) = sqTypeFail(i);
                 else
-                    obj.sensorReadings(i) = obj.squareTypes(state(1) + 1, state(2));
+                    sensorReadings(i) = obj.squareTypes(state(1) + 1, state(2));
+                    end
                 end
-                i + 1;
+                i = i + 1;
+                flag = true;
                 
                 %% DOWN LEFT
-                if (failureRateNum(i) == 50)
-                    obj.sensorReadings(i) = sqTypeFail(i);
+                if state(1) + 1 > worldSize || state(2) - 1 < 1
+                    sensorReadings(i) = 2;
+                    flag = false;
+                else if rand() < failureRate && flag == true
+                    sensorReadings(i) = sqTypeFail(i);
                 else               
-                    obj.sensorReadings(i) = obj.squareTypes(state(1) + 1, state(2) - 1);
+                    sensorReadings(i) = obj.squareTypes(state(1) + 1, state(2) - 1);
+                    end
                 end
-                i + 1;
+                i = i + 1;
+                flag = true;
                 
                 %% LEFT
-                if (failureRateNum(i) == 50)
-                    obj.sensorReadings(i) = sqTypeFail(i);
+                if state(2) - 1 < 1
+                    sensorReadings(i) = 2;
+                    flag = false;
+                else if rand() < failureRate && flag == true
+                    sensorReadings(i) = sqTypeFail(i);
                 else
-                    obj.sensorReadings(i) = obj.squareTypes(state(1), state(2) - 1);
+                    sensorReadings(i) = obj.squareTypes(state(1), state(2) - 1);
+                    end
                 end
+                
             end
         end
         
