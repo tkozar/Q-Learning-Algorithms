@@ -49,8 +49,8 @@ classdef GridWorld < handle
             obj.squareTypes(reservedSquares(1:end-1)) = 1;
             
             %% Initializing Storage State Vectors
-            newState = ones(2,1);
-            oldState = ones(2,1);
+            newState = ones(2);
+            oldState = ones(2);
         end
         
         %% view the grid world as a figure
@@ -86,12 +86,13 @@ classdef GridWorld < handle
         % this method allows the agent to request the results of its
         % actions in the world.
         function [newState,reward] = step(object, oldState, action)
+           worldSize = size(object.squareTypes, 1);
            switch action
                %% IF MOVNG RIGHT
-               case 0
+               case 1
                    %% checking the value in next state
-                   if (oldState(1,1) + 1 < worldSize + 1)
-                       oldState = object.squareTypes(oldState(1,1) + 1,oldState(2,1));
+                   if (oldState(1) + 1 < worldSize + 1)
+                       oldStateVal = object.squareTypes(oldState(1) + 1,oldState(2));
                    else 
                        oldStateVal = 2;
                    end
@@ -99,47 +100,47 @@ classdef GridWorld < handle
                    %% if open, move
                    if (oldStateVal == 1)
                        reward = 0;
-                       newState(1,1) = oldState(1,1) + 1;
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1) + 1;
+                       newState(2) = oldState(2);
                    end
                    
                    %% if wall, dont move
                    if (oldStateVal == 2)
                        reward = 0;
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2);
                    end
                    
                    %% if negative reward, move and reward negative
                    if (oldStateVal == 3)
                        reward = -1;
-                       newState(1,1) = oldState(1,1) + 1;
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1) + 1;
+                       newState(2) = oldState(2);
                    end
                    
                    %% if random +/-, move and decide reward
                    if (oldStateVal == 4)
                        reward = randi([-1 1],1,1);
-                       newState(1,1) = oldState(1,1) + 1;
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1) + 1;
+                       newState(2) = oldState(2);
                    end
                    
                    %% if goal state, move and give large reward
                    if (oldStateVal == 5)
                        reward = 10;
-                       newState(1,1) = oldState(1,1) + 1;
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1) + 1;
+                       newState(2) = oldState(2);
                    end
                    
                    %% update current address
-                   oldState(1,1) = newState(1,1);
-                   oldState(2,1) = newState(2,1);
+                   oldState(1) = newState(1);
+                   oldState(2) = newState(2);
                
                %% IF MOVING LEFT   
-               case 1
+               case 2
                    %% checking the value in next state
-                   if (oldState(1,1) - 1 > 0)
-                       oldState = object.squareTypes(oldState(1,1) - 1,oldState(2,1));
+                   if (oldState(1) - 1 > 0)
+                       oldStateVal = object.squareTypes(oldState(1) - 1,oldState(2));
                    else 
                        oldStateVal = 2;
                    end
@@ -147,95 +148,47 @@ classdef GridWorld < handle
                    %% if open, move
                    if (oldStateVal == 1)
                        reward = 0;
-                       newState(1,1) = oldState(1,1) - 1;
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1) - 1;
+                       newState(2) = oldState(2);
                    end
                    
                    %% if wall, dont move
                    if (oldStateVal == 2)
                        reward = 0;
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2);
                    end
                    
                    %% if negative reward, move and reward negative
                    if (oldStateVal == 3)
                        reward = -1;
-                       newState(1,1) = oldState(1,1) - 1;
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1) - 1;
+                       newState(2) = oldState(2);
                    end
                    
                    %% if random +/-, move and decide reward
                    if (oldState == 4)
                        reward = randi([-1 1],1,1);
-                       newState(1,1) = oldState(1,1) - 1;
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1) - 1;
+                       newState(2) = oldState(2);
                    end
                    
                    %% if goal state, move and give large reward
                    if (oldState == 5)
                        reward = 10;
-                       newState(1,1) = oldState(1,1) - 1;
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1) - 1;
+                       newState(2) = oldState(2);
                    end
                    
                    %% update current address
-                   oldState(1,1) = newState(1,1);
-                   oldState(2,1) = newState(2,1);
+                   oldState(1) = newState(1);
+                   oldState(2) = newState(2);
                
                %% IF MOVING UP
-               case 2
-                   %% checking the value in next state
-                   if (oldState(2,1) - 1 > 0)
-                       oldState = object.squareTypes(oldState(1,1),oldState(2,1) - 1);
-                   else 
-                       oldStateVal = 2;
-                   end
-                       
-                   %% if open, move
-                   if (oldStateVal == 1)
-                       reward = 0;
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1) - 1;
-                   end
-                   
-                   %% if wall, dont move
-                   if (oldStateVal == 2)
-                       reward = 0;
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1);
-                   end
-                   
-                   %% if negative reward, move and reward negative
-                   if (oldStateVal == 3)
-                       reward = -1;
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1) - 1;
-                   end
-                   
-                   %% if random +/-, move and decide reward
-                   if (oldStateVal == 4)
-                       reward = randi([-1 1],1,1);
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1) - 1;
-                   end
-                   
-                   %% if goal state, move and give large reward
-                   if (oldStateVal == 5)
-                       reward = 10;
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1) - 1;
-                   end
-                   
-                   %% update current address
-                   oldState(1,1) = newState(1,1);
-                   oldState(1,1) = newState(2,1);
-               
-               %% IF MOVING DOWN
                case 3
                    %% checking the value in next state
-                   if (oldState(2,1) + 1 < worldSize + 1)
-                       oldState = object.squareTypes(oldState(1,1),oldState(2,1) + 1);
+                   if (oldState(2) - 1 > 0)
+                       oldStateVal = object.squareTypes(oldState(1),oldState(2) - 1);
                    else 
                        oldStateVal = 2;
                    end
@@ -243,49 +196,162 @@ classdef GridWorld < handle
                    %% if open, move
                    if (oldStateVal == 1)
                        reward = 0;
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1) + 1;
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2) - 1;
                    end
                    
                    %% if wall, dont move
                    if (oldStateVal == 2)
                        reward = 0;
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1);
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2);
                    end
                    
                    %% if negative reward, move and reward negative
                    if (oldStateVal == 3)
                        reward = -1;
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1) + 1;
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2) - 1;
                    end
                    
                    %% if random +/-, move and decide reward
                    if (oldStateVal == 4)
                        reward = randi([-1 1],1,1);
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1) + 1;
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2) - 1;
                    end
                    
                    %% if goal state, move and give large reward
                    if (oldStateVal == 5)
                        reward = 10;
-                       newState(1,1) = oldState(1,1);
-                       newState(2,1) = oldState(2,1) + 1;
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2) - 1;
                    end
                    
                    %% update current address
-                   oldState(1,1) = newState(1,1);
-                   oldState(2,1) = newState(2,1);
+                   oldState(1) = newState(1);
+                   oldState(1) = newState(2);
+               
+               %% IF MOVING DOWN
+               case 4
+                   %% checking the value in next state
+                   if (oldState(2) + 1 < worldSize + 1)
+                       oldStateVal = object.squareTypes(oldState(1),oldState(2) + 1);
+                   else 
+                       oldStateVal = 2;
+                   end
+                       
+                   %% if open, move
+                   if (oldStateVal == 1)
+                       reward = 0;
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2) + 1;
+                   end
+                   
+                   %% if wall, dont move
+                   if (oldStateVal == 2)
+                       reward = 0;
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2);
+                   end
+                   
+                   %% if negative reward, move and reward negative
+                   if (oldStateVal == 3)
+                       reward = -1;
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2) + 1;
+                   end
+                   
+                   %% if random +/-, move and decide reward
+                   if (oldStateVal == 4)
+                       reward = randi([-1 1],1,1);
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2) + 1;
+                   end
+                   
+                   %% if goal state, move and give large reward
+                   if (oldStateVal == 5)
+                       reward = 10;
+                       newState(1) = oldState(1);
+                       newState(2) = oldState(2) + 1;
+                   end
+                   
+                   %% update current address
+                   oldState(1) = newState(1);
+                   oldState(2) = newState(2);
            end
         end
        
         %% getSensorReadings
         % this method returns the agent's current sensor readings, given
         % the specified state in the grid world
-        function [sensorReadings] = getSensorReadings(state, failureRate)
-            % code here
+        function [sensorReadings] = getSensorReadings(obj,state, failureRate)
+            failureRateNum = randi([1,(100/failureRate)],8,1);
+            sqTypeFail = randi([1,5],8,1);
+            for i = 1
+                %% TOP LEFT
+                if (failureRateNum(i) == 50)
+                    obj.sensorReadings(i) = sqTypeFail(i);
+                else
+                    obj.sensorReadings(i) = obj.squareTypes(state(1) - 1, state(2) - 1);
+                end
+                i + 1;
+                
+                %% UP
+                if (failureRateNum(i) == 50)
+                    obj.sensorReadings(i) = sqTypeFail(i);
+                else
+                    obj.sensorReadings(i) = obj.squareTypes(state(1) - 1, state(2));
+                end
+                i + 1;
+                
+                %% TOP RIGHT
+                if (failureRateNum(i) == 50)
+                   obj.sensorReadings(i) = sqTypeFail(i);
+                else
+                   obj.sensorReadings(i) = obj.squareTypes(state(1) - 1, state(2) + 1);
+                end
+                i + 1;
+                
+                %% RIGHT
+                if (failureRateNum(i) == 50)
+                    obj.sensorReadings(i) = sqTypeFail(i);
+                else
+                    obj.sensorReadings(i) = obj.squareTypes(state(1), state(2) + 1);
+                end
+                i + 1;
+                
+                %% BOTTOM RIGHT
+                if (failureRateNum(i) == 50)
+                    obj.sensorReadings(i) = sqTypeFail(i);
+                else
+                    obj.sensorReadings(i) = obj.squareTypes(state(1) + 1, state(2) + 1);
+                end
+                i + 1;
+                
+                %% DOWN
+                if (failureRateNum(i) == 50)
+                    obj.sensorReadings(i) = sqTypeFail(i);
+                else
+                    obj.sensorReadings(i) = obj.squareTypes(state(1) + 1, state(2));
+                end
+                i + 1;
+                
+                %% DOWN LEFT
+                if (failureRateNum(i) == 50)
+                    obj.sensorReadings(i) = sqTypeFail(i);
+                else               
+                    obj.sensorReadings(i) = obj.squareTypes(state(1) + 1, state(2) - 1);
+                end
+                i + 1;
+                
+                %% LEFT
+                if (failureRateNum(i) == 50)
+                    obj.sensorReadings(i) = sqTypeFail(i);
+                else
+                    obj.sensorReadings(i) = obj.squareTypes(state(1), state(2) - 1);
+                end
+            end
         end
         
     end
