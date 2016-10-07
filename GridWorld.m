@@ -6,8 +6,8 @@ classdef GridWorld < handle
     
     properties
         % this property is a matrix that stores the 'type' of each square
-        % in the gridworld: 1 = good space, 2 = wall, 3 = negative reward,
-        % 4 = random event occurence (could be +/- reward), 5 = goal state
+        % in the gridworld: 1 = good space, 2 = wall, 5 = negative reward,
+        % 4 = random event occurence (could be +/- reward), 3 = goal state
         squareTypes;
                 
     end
@@ -22,7 +22,7 @@ classdef GridWorld < handle
             % add goal state
             goalSquareIndex = allSquares(end);
             allSquares(end) = [];
-            obj.squareTypes(goalSquareIndex) = 5;
+            obj.squareTypes(goalSquareIndex) = 3;
             
             % add walls
             numWalls = round(wallFraction * numel(obj.squareTypes));
@@ -54,7 +54,7 @@ classdef GridWorld < handle
         end
         
         %% view the grid world as a figure
-        function view(obj, size)
+        function view(obj, size, agentState)
             % create a bitmap version of the world
             bmp = 255*ones(length(obj.squareTypes), length(obj.squareTypes),3);
             
@@ -63,19 +63,20 @@ classdef GridWorld < handle
                     switch obj.squareTypes(i,j)
                         case 2 % walls
                             bmp(i,j,:) = 0;
-                        case 3 % negative reward
-                            bmp(i,j,1) = 0;
-                        case 4 % random reward
-                            bmp(i,j,1) = 0;
-                        case 5 % goal
+                        case 3 % goal
                             bmp(i,j,[1,3]) = 0;
                     end
                 end
             end
             
-            % mark the start state in red
-            bmp(1,1,2:3) = 0;
+            % mark the start state in blue
+            bmp(1,1,1:2) = 0;
             
+            % mark the agent's state
+            if nargin==3
+                bmp(agentState(1), agentState(2), :) = [0 255 255];
+            end
+                
             % enlarge to requested size
             bmp = imresize(uint8(bmp), [size,size], 'nearest');
             % add gridlines
@@ -116,7 +117,7 @@ classdef GridWorld < handle
                    end
                    
                    %% if negative reward, move and reward negative
-                   if (oldStateVal == 3)
+                   if (oldStateVal == 5)
                        reward = -1;
                        newState(1) = oldState(1) + 1;
                        newState(2) = oldState(2);
@@ -130,10 +131,10 @@ classdef GridWorld < handle
                    end
                    
                    %% if goal state, move and give large reward
-                   if (oldStateVal == 5)
+                   if (oldStateVal == 3)
                        reward = 10;
-                       newState(1) = oldState(1) + 1;
-                       newState(2) = oldState(2);
+                       newState(1) = 1;
+                       newState(2) = 1;
                    end
                    
                    %% update current address
@@ -151,37 +152,37 @@ classdef GridWorld < handle
                        
                    %% if open, move
                    if (oldStateVal == 1)
-                       reward = 0;
+                       reward = -0.1;
                        newState(1) = oldState(1) - 1;
                        newState(2) = oldState(2);
                    end
                    
                    %% if wall, dont move
                    if (oldStateVal == 2)
-                       reward = 0;
+                       reward = -1;
                        newState(1) = oldState(1);
                        newState(2) = oldState(2);
                    end
                    
                    %% if negative reward, move and reward negative
-                   if (oldStateVal == 3)
+                   if (oldStateVal == 5)
                        reward = -1;
                        newState(1) = oldState(1) - 1;
                        newState(2) = oldState(2);
                    end
                    
                    %% if random +/-, move and decide reward
-                   if (oldState == 4)
+                   if (oldStateVal == 4)
                        reward = randi([-1 1],1,1);
                        newState(1) = oldState(1) - 1;
                        newState(2) = oldState(2);
                    end
                    
                    %% if goal state, move and give large reward
-                   if (oldState == 5)
+                   if (oldStateVal == 3)
                        reward = 10;
-                       newState(1) = oldState(1) - 1;
-                       newState(2) = oldState(2);
+                       newState(1) = 1;
+                       newState(2) = 1;
                    end
                    
                    %% update current address
@@ -199,20 +200,20 @@ classdef GridWorld < handle
                        
                    %% if open, move
                    if (oldStateVal == 1)
-                       reward = 0;
+                       reward = -0.1;
                        newState(1) = oldState(1);
                        newState(2) = oldState(2) - 1;
                    end
                    
                    %% if wall, dont move
                    if (oldStateVal == 2)
-                       reward = 0;
+                       reward = -1;
                        newState(1) = oldState(1);
                        newState(2) = oldState(2);
                    end
                    
                    %% if negative reward, move and reward negative
-                   if (oldStateVal == 3)
+                   if (oldStateVal == 5)
                        reward = -1;
                        newState(1) = oldState(1);
                        newState(2) = oldState(2) - 1;
@@ -226,10 +227,10 @@ classdef GridWorld < handle
                    end
                    
                    %% if goal state, move and give large reward
-                   if (oldStateVal == 5)
+                   if (oldStateVal == 3)
                        reward = 10;
-                       newState(1) = oldState(1);
-                       newState(2) = oldState(2) - 1;
+                       newState(1) = 1;
+                       newState(2) = 1;
                    end
                    
                    %% update current address
@@ -247,20 +248,20 @@ classdef GridWorld < handle
                        
                    %% if open, move
                    if (oldStateVal == 1)
-                       reward = 0;
+                       reward = -0.1;
                        newState(1) = oldState(1);
                        newState(2) = oldState(2) + 1;
                    end
                    
                    %% if wall, dont move
                    if (oldStateVal == 2)
-                       reward = 0;
+                       reward = -1;
                        newState(1) = oldState(1);
                        newState(2) = oldState(2);
                    end
                    
                    %% if negative reward, move and reward negative
-                   if (oldStateVal == 3)
+                   if (oldStateVal == 5)
                        reward = -1;
                        newState(1) = oldState(1);
                        newState(2) = oldState(2) + 1;
@@ -274,15 +275,19 @@ classdef GridWorld < handle
                    end
                    
                    %% if goal state, move and give large reward
-                   if (oldStateVal == 5)
+                   if (oldStateVal == 3)
                        reward = 10;
-                       newState(1) = oldState(1);
-                       newState(2) = oldState(2) + 1;
+                       newState(1) = 1;
+                       newState(2) = 1;
                    end
                    
                    %% update current address
                    oldState(1) = newState(1);
                    oldState(2) = newState(2);
+           end
+           
+           if reward==10
+               erro = 1;
            end
         end
        
@@ -291,7 +296,7 @@ classdef GridWorld < handle
         % the specified state in the grid world
         function [sensorReadings] = getSensorReadings(obj, state, failureRate)
             worldSize = size(obj.squareTypes, 1);
-            sqTypeFail = randi([1,4],8,1);
+            sqTypeFail = randi(2,8,1);
             flag = true;
             for i = 1
                 %% TOP LEFT
