@@ -7,7 +7,7 @@ Our agents sensors are imperfect: their perception of neighboring states can som
 Here’s a quick overview of the code:
 
 GridWorld.m
-The grid world class. The constructor generates a random grid world with at least one solution. Some of this code is a little confusing (I didn’t write it all :)) but an agent interacts with the grid world via the ‘step’ method, which takes an old state & action, and returns a new state & reward.
+The grid world class. The constructor generates a random grid world with at least one solution. Some of this code is a little confusing, but an agent interacts with the grid world via the ‘step’ method, which takes an old state & action, and returns a new state & reward.
 
 Agent.m 
 This is the agent class.  Our agent implements the egocentric learning system as a neural network. The constructor takes a grid world object, and these three parameters:
