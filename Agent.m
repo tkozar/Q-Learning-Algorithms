@@ -81,20 +81,20 @@ classdef Agent < handle
 %                     pred = perfectPredictions([sens a]);
                     
                     try
-                    predState = round(obj.currentState + pred(1:2));
-                    
-                    truePred = perfectPredictions([sens, a]);
-                    if ~isequal(round(pred(1:2)), truePred(1:2))
-                       obj.predErrors = obj.predErrors+1;
-                    end
-                    
-                    predState = max([1 1], min(predState, size(obj.world.squareTypes)));
-                    predStateInd = sub2ind(size(obj.world.squareTypes), predState(1), predState(2));
-                    
-                    obj.qLearner.update(currentStateInd, a, predStateInd, pred(3));
-                    %disp('prediction transferred');
+                        predState = round(obj.currentState + pred(1:2));
+                        
+                        truePred = perfectPredictions([sens, a]);
+                        if ~isequal(round(pred(1:2)), truePred(1:2))
+                            obj.predErrors = obj.predErrors+1;
+                        end
+                        
+                        predState = max([1 1], min(predState, size(obj.world.squareTypes)));
+                        predStateInd = sub2ind(size(obj.world.squareTypes), predState(1), predState(2));
+                        
+                        obj.qLearner.update(currentStateInd, a, predStateInd, pred(3));
+                        %disp('prediction transferred');
                     catch
-                        error('error');
+                        error('Step error:');
                     end
                 end
             end

@@ -9,7 +9,7 @@ numAgents = size(parameters,1);
 f = zeros(numAgents, 3);
 disp(['evaluating ' num2str(numAgents) ' agents in a random grid world...']);
 tic
-parfor agentNum=1:numAgents
+for agentNum=1:numAgents
     
     % instantiate the agent - disable the egocentric learning system
     pCell = num2cell(parameters(agentNum,:));
