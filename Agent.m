@@ -24,10 +24,8 @@ classdef Agent < handle
         defaultQ = 10;
         steps = 0;
         rHistory = [];
-        sensFailRate = 0;
-        
-        predErrors = 0;
-       
+        sensFailRate = 0;        
+        predErrors = 0;       
     end
     
     methods
@@ -77,7 +75,7 @@ classdef Agent < handle
                     stateActionCell = num2cell([sens, a]);
                     stateActionInd = sub2ind([3 3 3 3 3 3 3 3 4], stateActionCell{:});
                     pred = obj.allPredictions(stateActionInd,:);
-                    
+                    % PROBLEM: perfectPredictions are not defined! 
 %                     pred = perfectPredictions([sens a]);
                     
                     try
