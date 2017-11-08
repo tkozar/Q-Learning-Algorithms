@@ -1,3 +1,14 @@
+This project explores the idea of the balance between sensory and navigational 
+systems from an evolutionary approach where the existance of such systems is 
+expensive. Our agents' sensors are imperfect: their perception of neighboring states 
+can sometimes be wrong. We note that an agent with high quality sensors 
+might get by with a simple egocentric learning system, while lower quality 
+sensors might necessitate a more sophisticated egocentric model. 
+
+We use a multi-objective genetic algorithm to create a set of agents with varying 
+trade-offs between sensor "cost" and model "cost". We'll see if good fitness can be 
+obtained in a variety of ways (as it seems to be in nature).
+
 We consider grid-world-solving agents who can sense the world through imperfect 
 sensors, and are equipped with both egocentric and allocentric learning systems. 
 The agent always has an allocentric state and an egocentric state: the 
@@ -9,7 +20,7 @@ below and to the right") and is perceived by the agent’s sensors.
 In this project we model imperfect sensors but assume the agent's 
 allocentric representation is perfect.
 
-  The allocentric learning system is the typical q-learning system: it 
+The allocentric learning system is the typical q-learning system: it 
 learns the values of each action from each allocentric state. 
 Ultimately the allocentric system learns to solve the grid-world. The 
 egocentric learning system considers the egocentric state and learns to 
@@ -23,19 +34,10 @@ system can predict the outcome of each action given the egocentric
 information. These predicted experiences are fed into the allocentric 
 learning system, which learns from them as if they were real experiences. 
 The agent can then make a more informed choice about what to do in this 
-new allocentric state. The upshot of this is that the agen can essentially 
+new allocentric state. The upshot of this is that the agent can essentially 
 learn what happens when you step into lava or crash into a wall, and then 
 avoid doing those things when it encounters lava & walls in the future.
 
-Our agents' sensors are imperfect: their perception of neighboring states 
-can sometimes be wrong. We note that an agent with high quality sensors 
-might get by with a simple egocentric learning system, while lower quality 
-sensors might necessitate a more sophisticated egocentric model. 
-
-The idea of this project is to use a multi-objective genetic algorithm to 
-create a set of agents with varying trade-offs between sensor "cost" and 
-model "cost". We'll see if good fitness can be obtained in a variety of 
-ways (as it seems to be in nature).
 
 Here's a quick overview of the code:
 
