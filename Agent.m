@@ -24,10 +24,8 @@ classdef Agent < handle
         defaultQ = 10;
         steps = 0;
         rHistory = [];
-        sensFailRate = 0;
-        
-        predErrors = 0;
-       
+        sensFailRate = 0;        
+        predErrors = 0;       
     end
     
     methods
@@ -77,24 +75,24 @@ classdef Agent < handle
                     stateActionCell = num2cell([sens, a]);
                     stateActionInd = sub2ind([3 3 3 3 3 3 3 3 4], stateActionCell{:});
                     pred = obj.allPredictions(stateActionInd,:);
-                    
+                    % PROBLEM: perfectPredictions are not defined! 
 %                     pred = perfectPredictions([sens a]);
                     
                     try
-                    predState = round(obj.currentState + pred(1:2));
-                    
-                    truePred = perfectPredictions([sens, a]);
-                    if ~isequal(round(pred(1:2)), truePred(1:2))
-                       obj.predErrors = obj.predErrors+1;
-                    end
-                    
-                    predState = max([1 1], min(predState, size(obj.world.squareTypes)));
-                    predStateInd = sub2ind(size(obj.world.squareTypes), predState(1), predState(2));
-                    
-                    obj.qLearner.update(currentStateInd, a, predStateInd, pred(3));
-                    %disp('prediction transferred');
+                        predState = round(obj.currentState + pred(1:2));
+                        
+                        truePred = perfectPredictions([sens, a]);
+                        if ~isequal(round(pred(1:2)), truePred(1:2))
+                            obj.predErrors = obj.predErrors+1;
+                        end
+                        
+                        predState = max([1 1], min(predState, size(obj.world.squareTypes)));
+                        predStateInd = sub2ind(size(obj.world.squareTypes), predState(1), predState(2));
+                        
+                        obj.qLearner.update(currentStateInd, a, predStateInd, pred(3));
+                        %disp('prediction transferred');
                     catch
-                        error('error');
+                        error('Step error:');
                     end
                 end
             end
