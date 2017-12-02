@@ -134,6 +134,7 @@ classdef Agent < handle
             
             if display==true
                 obj.world.view(300,newState);
+				pause(0.5)
             end
             
             obj.steps = obj.steps + 1;

@@ -75,8 +75,8 @@ the GA minimizes the objective funtion)
 
 - sensor quality (defined as the negative of the sensor fail rate)
 
-* The theoretical perfect agent would achieve maximum reward with minimum 
-model complexity and sensor quality. *  
+The theoretical perfect agent would achieve maximum reward with minimum 
+model complexity and sensor quality. 
 
 Gascript.m
 This is the starting point: it simply sets up the GA and runs it.

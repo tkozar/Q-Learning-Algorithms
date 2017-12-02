@@ -29,7 +29,7 @@ classdef ModelFreeRL < handle
         end
         
         function update(obj, oldStateNum, actionNum, newStateNum, reward)
-            t = obj.Ttable{actionNum};
+            t = obj.Ttable{actionNum}; % get the corresponding table
             t(oldStateNum, newStateNum) = t(oldStateNum, newStateNum) + 1;
             obj.Ttable(actionNum) = {t};
             
