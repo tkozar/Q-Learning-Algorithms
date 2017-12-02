@@ -3,13 +3,16 @@
 % interacting with it.
 
 classdef GridWorld < handle
-    
+	
     properties
         % this property is a matrix that stores the 'type' of each square
-        % in the gridworld: 1 = good space, 2 = wall, 5 = negative reward,
-        % 4 = random event occurence (could be +/- reward), 3 = goal state
-        squareTypes;
-                
+        % in the gridworld: 
+		% 1 = good space: - white cell in the view of the world 
+		% 2 = wall: - black cells 
+		% 3 = goal state : green cell (high positive reward)
+		% 4 = random event occurence (could be +/- reward)
+		% 5 = negative reward:         		
+        squareTypes;                
     end
     
     methods
@@ -62,9 +65,9 @@ classdef GridWorld < handle
                 for j = 1:length(obj.squareTypes)
                     switch obj.squareTypes(i,j)
                         case 2 % walls
-                            bmp(i,j,:) = 0;
+                            bmp(i,j,:) = 0; % black
                         case 3 % goal
-                            bmp(i,j,[1,3]) = 0;
+                            bmp(i,j,[1,3]) = 0; % green
                     end
                 end
             end
@@ -72,7 +75,7 @@ classdef GridWorld < handle
             % mark the start state in blue
             bmp(1,1,1:2) = 0;
             
-            % mark the agent's state
+            % mark the agent's state: cyan
             if nargin==3
                 bmp(agentState(1), agentState(2), :) = [0 255 255];
             end
@@ -88,18 +91,20 @@ classdef GridWorld < handle
         end
         
         %% step
+		% Updates the state of the world given the action that the agent
+		% has taken.
         % this method allows the agent to request the results of its
         % actions in the world.
         function [newState,reward] = step(object, oldState, action)
            worldSize = size(object.squareTypes, 1);
-           switch action
+           switch action % check what are the state, value for the selected action
                %% IF MOVNG RIGHT
                case 1
                    %% checking the value in next state
-                   if (oldState(1) + 1 < worldSize + 1)
+                   if (oldState(1) + 1 < worldSize + 1) % open
                        oldStateVal = object.squareTypes(oldState(1) + 1,oldState(2));
                    else 
-                       oldStateVal = 2;
+                       oldStateVal = 2; % wall
                    end
                    
                    %% if open, move

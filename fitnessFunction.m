@@ -19,7 +19,7 @@ for agentNum=1:numAgents
     
     % run this agent on the training task (10k steps)
     for i = 1:10000
-        agent.step(false, false);
+        agent.step(true, false);
     end
     
     % switch to test task - allow egocentric system to transfer knowledge
