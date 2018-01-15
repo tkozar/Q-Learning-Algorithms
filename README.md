@@ -38,6 +38,24 @@ new allocentric state. The upshot of this is that the agent can essentially
 learn what happens when you step into lava or crash into a wall, and then 
 avoid doing those things when it encounters lava & walls in the future.
 
+Questions:
+1) How is the agent using the egocentric info to inform the allocentric 
+system?
+
+2) How are the predictions made in the egocentric system made? (i.e. if 
+there is a wall above, moving up results is no change to the allocentric 
+state)
+
+Ideas:
+
+1) How is semantic knowledge formed? can this be modelled with the current 
+system? ie form allocentric information based on the egocentric? What kind 
+of interaction is needed? What is the minimum sensory information for this? 
+Check Buzsaki & Moser, 2013.
+
+2) Rodent spatial navigation. Can we model an abstract rodent navigation 
+system to explore the interaction between egocentric and allocentric 
+information in a more biologically inspired way? (Check Oess et al, 2017)
 
 Here's a quick overview of the code:
 
