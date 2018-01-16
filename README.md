@@ -38,6 +38,47 @@ new allocentric state. The upshot of this is that the agent can essentially
 learn what happens when you step into lava or crash into a wall, and then 
 avoid doing those things when it encounters lava & walls in the future.
 
+Questions:
+1) How is the agent using the egocentric info to inform the allocentric 
+system?
+
+2) How are the predictions made in the egocentric system made? (i.e. if 
+there is a wall above, moving up results is no change to the allocentric 
+state)
+
+Ideas:
+
+1) How is semantic knowledge formed? can this be modelled with the current 
+system? ie form allocentric information based on the egocentric? What kind 
+of interaction is needed? What is the minimum sensory information for this? 
+Check Buzsaki & Moser, 2013.
+
+2) Rodent spatial navigation. Can we model an abstract rodent navigation 
+system to explore the interaction between egocentric and allocentric 
+information in a more biologically inspired way? (Check Oess et al, 2017)
+
+===============
+Possible modifications and ideas
+
+- Egocentric system: head direction based information. This would be the 
+equivalent of a compass that shows the direction in which the agent is 
+headed.
+
+- Allocentric system: place cell information. This would be the equivalent 
+of a global localization system (i.e. GPS) that shows the location of the 
+agent in the arena.
+
+The combination of these two systems are sufficient to perform navigation.
+
+Another idea could be to explore knowledge extraction (semantic knowledge).
+In this case, the system would be in charge to transform (to abstract) 
+egocentric knowledge into allocentric knowledge. 
+
+They propose that " mechanisms of memory and planning have evolved from 
+mechanisms of navigation in the physical world and hypothesize 
+that the neuronal algorithms underlying navigation in real and mental space
+are fundamentally the same". (Buzsaki & Moser, 2013)
+
 
 Here's a quick overview of the code:
 
