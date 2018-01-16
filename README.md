@@ -57,6 +57,29 @@ Check Buzsaki & Moser, 2013.
 system to explore the interaction between egocentric and allocentric 
 information in a more biologically inspired way? (Check Oess et al, 2017)
 
+===============
+Possible modifications and ideas
+
+- Egocentric system: head direction based information. This would be the 
+equivalent of a compass that shows the direction in which the agent is 
+headed.
+
+- Allocentric system: place cell information. This would be the equivalent 
+of a global localization system (i.e. GPS) that shows the location of the 
+agent in the arena.
+
+The combination of these two systems are sufficient to perform navigation.
+
+Another idea could be to explore knowledge extraction (semantic knowledge).
+In this case, the system would be in charge to transform (to abstract) 
+egocentric knowledge into allocentric knowledge. 
+
+They propose that " mechanisms of memory and planning have evolved from 
+mechanisms of navigation in the physical world and hypothesize 
+that the neuronal algorithms underlying navigation in real and mental space
+are fundamentally the same". (Buzsaki & Moser, 2013)
+
+
 Here's a quick overview of the code:
 
 GridWorld.m
